@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¿Aceptas la invitación?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f0f8ff;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    .button-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      height: 300px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 25px;
+      cursor: pointer;
+    }
+
+    #no-button {
+      position: absolute;
+      top: 120px; /* debajo del botón "Sí" */
+      left: 50%;
+      transform: translateX(-50%);
+      transition: top 0.2s, left 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
+  <div class="button-container">
+    <button onclick="aceptar()">Sí 💖</button>
+    <button id="no-button">No 😢</button>
+  </div>
+
+  <script>
+    const noButton = document.getElementById('no-button');
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = noButton.getBoundingClientRect();
+      const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
+
+      if (distancia < 100) {
+        const centerX = window.innerWidth / 1.5;
+        const centerY = window.innerHeight / 2;
+
+        const rangeX = window.innerWidth * 0.2; // 50% del ancho centrado
+        const rangeY = window.innerHeight * 0.2; // 50% del alto centrado
+
+        const minX = centerX - rangeX;
+        const maxX = centerX + rangeX - noButton.offsetWidth;
+
+        const minY = centerY - rangeY;
+        const maxY = centerY + rangeY - noButton.offsetHeight;
+
+        const newX = Math.random() * (maxX - minX) + minX;
+        const newY = Math.random() * (maxY - minY) + minY;
+
+        noButton.style.left = `${newX}px`;
+        noButton.style.top = `${newY}px`;
+      }
+    });
+
+    function aceptar() {
+      alert("¡Sabía que dirías que sí! 💕");
+    }
+  </script>
+
+</body>
+</html>
