@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>¿Aceptas la invitación?</title>
@@ -41,49 +42,89 @@
     }
   </style>
 </head>
+
 <body>
-<div class="img">
-  <img src="/assets/image.png" alt="Invitación" style="width: 80%; height: auto; border-radius: 15px;">
-</div>
-
-<h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
-
-<div class="button-area" id="zona-segura">
-  <div class="button-container">
-    <button id="yes-button">Sí 💖</button>
-    <button id="no-button">No 😢</button>
+  <div class="img">
+    <img src="/assets/image.png" alt="Invitación" style="width: 80%; height: auto; border-radius: 15px;">
   </div>
-</div>
 
+  <h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
 
-  <script>
+  <div class="button-area" id="zona-segura">
+    <div class="button-container">
+      <button id="yes-button">Sí 💖</button>
+      <button id="no-button">No 😢</button>
+    </div>
+  </div>
+
+  <!-- <button onclick="registrarMovimiento()">Mover botón</button> -->
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD8iRrVqRcjjLfumwTDtTcdQtguiH3A_84",
+    authDomain: "invitation-d2871.firebaseapp.com",
+    databaseURL: "https://invitation-d2871-default-rtdb.firebaseio.com", // NECESARIO
+    projectId: "invitation-d2871",
+    storageBucket: "invitation-d2871.appspot.com",
+    messagingSenderId: "1017668626783",
+    appId: "1:1017668626783:web:f979fe66ab205d377eeeea",
+    measurementId: "G-W9GSS4PMXT"
+  };
+
+  // const app = firebase.initializeApp(firebaseConfig);
+  // const db = firebase.database();
+
+// firebase.initializeApp(firebaseConfig);
+// firebase.database().ref(".info/connected").on("value", (snap) => {
+//   if (snap.val() === true) {
+//     console.log("🔥 Conectado a Firebase Realtime Database");
+//   } else {
+//     console.error("❌ No conectado a Firebase");
+//   }
+// });
+
+    // ✅ Inicializar Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function registrarMovimiento() {
+      db.ref("invitation").push({
+        fecha: new Date().toISOString(),
+        numero: 1
+      });
+    }
+
+    // Lógica de botones
     const noButton = document.getElementById('no-button');
     const yesButton = document.getElementById('yes-button');
     let clickCount = 0;
 
-function moverBoton() {
-  const zona = document.getElementById('zona-segura');
-  const zonaRect = zona.getBoundingClientRect();
+    function moverBoton() {
+      registrarMovimiento();
+      const zona = document.getElementById('zona-segura');
+      const zonaRect = zona.getBoundingClientRect();
 
-  const rangeX = zonaRect.width - noButton.offsetWidth;
-  const rangeY = zonaRect.height - noButton.offsetHeight;
+      const rangeX = zonaRect.width - noButton.offsetWidth;
+      const rangeY = zonaRect.height - noButton.offsetHeight;
 
-  const newX = Math.random() * rangeX;
-  const newY = Math.random() * rangeY;
+      const newX = Math.random() * rangeX;
+      const newY = Math.random() * rangeY;
 
-  noButton.style.left = `${newX}px`;
-  noButton.style.top = `${newY}px`;
-}
+      noButton.style.left = `${newX}px`;
+      noButton.style.top = `${newY}px`;
+    }
 
-
-    // PC: mouse cerca del botón "No"
+    // PC: Mouse cerca del botón "No"
     document.addEventListener('mousemove', (e) => {
       const rect = noButton.getBoundingClientRect();
       const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
       if (distancia < 100) moverBoton();
     });
 
-    // Móvil: toque cerca del botón "No"
+    // Móvil: toque cerca
     document.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
       const rect = noButton.getBoundingClientRect();
@@ -91,23 +132,22 @@ function moverBoton() {
       if (distancia < 100) moverBoton();
     });
 
-    // Si alguien llega a hacer clic en "No"
+    // Click directo en "No"
     noButton.addEventListener('click', (e) => {
       e.preventDefault();
       moverBoton();
     });
 
-    // Click en el botón "Sí"
+    // Click en "Sí"
     yesButton.addEventListener('click', () => {
       clickCount++;
       if (clickCount === 1) {
-        moverBoton(); // el "No" huye al primer clic en "Sí"
+        moverBoton();
       } else if (clickCount === 2) {
         alert("¡Sabía que dirías que sí! 💕");
       }
     });
   </script>
-
 </body>
 
 </html>
