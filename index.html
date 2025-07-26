@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>¿Aceptas la invitación?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -33,7 +34,7 @@
 
     #no-button {
       position: absolute;
-      top: 120px; /* debajo del botón "Sí" */
+      top: 120px;
       left: 50%;
       transform: translateX(-50%);
       transition: top 0.2s, left 0.2s;
@@ -51,29 +52,38 @@
   <script>
     const noButton = document.getElementById('no-button');
 
+    function moverBoton() {
+      const rangeX = window.innerWidth * 0.25;
+      const rangeY = window.innerHeight * 0.25;
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      const minX = centerX - rangeX;
+      const maxX = centerX + rangeX - noButton.offsetWidth;
+
+      const minY = centerY - rangeY;
+      const maxY = centerY + rangeY - noButton.offsetHeight;
+
+      const newX = Math.random() * (maxX - minX) + minX;
+      const newY = Math.random() * (maxY - minY) + minY;
+
+      noButton.style.left = `${newX}px`;
+      noButton.style.top = `${newY}px`;
+    }
+
+    // PC: detecta el mouse cerca
     document.addEventListener('mousemove', (e) => {
       const rect = noButton.getBoundingClientRect();
       const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
+      if (distancia < 100) moverBoton();
+    });
 
-      if (distancia < 100) {
-        const centerX = window.innerWidth / 1.5;
-        const centerY = window.innerHeight / 2;
-
-        const rangeX = window.innerWidth * 0.2; // 50% del ancho centrado
-        const rangeY = window.innerHeight * 0.2; // 50% del alto centrado
-
-        const minX = centerX - rangeX;
-        const maxX = centerX + rangeX - noButton.offsetWidth;
-
-        const minY = centerY - rangeY;
-        const maxY = centerY + rangeY - noButton.offsetHeight;
-
-        const newX = Math.random() * (maxX - minX) + minX;
-        const newY = Math.random() * (maxY - minY) + minY;
-
-        noButton.style.left = `${newX}px`;
-        noButton.style.top = `${newY}px`;
-      }
+    // Móvil: detecta toques cercanos
+    document.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      const rect = noButton.getBoundingClientRect();
+      const distancia = Math.hypot(rect.x - touch.clientX, rect.y - touch.clientY);
+      if (distancia < 100) moverBoton();
     });
 
     function aceptar() {
