@@ -23,8 +23,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 30px;
-      height: 300px;
+      gap: 80px;
+      height: 380px;
     }
 
     button {
@@ -35,7 +35,7 @@
 
     #no-button {
       position: absolute;
-      top: 70px;
+      top: 60px;
       left: 50%;
       transform: translateX(-50%);
       transition: top 0.2s, left 0.2s;
@@ -45,48 +45,34 @@
 
 <body>
   <div class="img">
-    <img src="/assets/image.png" alt="Invitación" style="width: 90%; height: auto; border-radius: 15px;">
+    <img src="/assets/image.png" alt="Invitación" style="width: 50%; height: auto; border-radius: 15px;">
   </div>
 
-  <h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
+  <h1 id="main-question">¿Quieres aceptar mi invitación? 🥺</h1>
 
   <div class="button-area" id="zona-segura">
     <div class="button-container">
-      <button id="yes-button">Sí 💖</button>
+      <button id="yes-button">Sí 😉</button>
       <button id="no-button">No 😢</button>
+      <button id="maybe-button">Tal vez 🤔</button>
     </div>
   </div>
 
-  <!-- <button onclick="registrarMovimiento()">Mover botón</button> -->
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyD8iRrVqRcjjLfumwTDtTcdQtguiH3A_84",
-    authDomain: "invitation-d2871.firebaseapp.com",
-    databaseURL: "https://invitation-d2871-default-rtdb.firebaseio.com", // NECESARIO
-    projectId: "invitation-d2871",
-    storageBucket: "invitation-d2871.appspot.com",
-    messagingSenderId: "1017668626783",
-    appId: "1:1017668626783:web:f979fe66ab205d377eeeea",
-    measurementId: "G-W9GSS4PMXT"
-  };
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8iRrVqRcjjLfumwTDtTcdQtguiH3A_84",
+      authDomain: "invitation-d2871.firebaseapp.com",
+      databaseURL: "https://invitation-d2871-default-rtdb.firebaseio.com",
+      projectId: "invitation-d2871",
+      storageBucket: "invitation-d2871.appspot.com",
+      messagingSenderId: "1017668626783",
+      appId: "1:1017668626783:web:f979fe66ab205d377eeeea",
+      measurementId: "G-W9GSS4PMXT"
+    };
 
-  // const app = firebase.initializeApp(firebaseConfig);
-  // const db = firebase.database();
-
-// firebase.initializeApp(firebaseConfig);
-// firebase.database().ref(".info/connected").on("value", (snap) => {
-//   if (snap.val() === true) {
-//     console.log("🔥 Conectado a Firebase Realtime Database");
-//   } else {
-//     console.error("❌ No conectado a Firebase");
-//   }
-// });
-
-    // ✅ Inicializar Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -97,34 +83,59 @@
       });
     }
 
-    // Lógica de botones
+    // Botones
     const noButton = document.getElementById('no-button');
     const yesButton = document.getElementById('yes-button');
+    const maybeButton = document.getElementById('maybe-button');
+    const h1 = document.getElementById('main-question');
+
     let clickCount = 0;
 
-    function moverBoton() {
-      registrarMovimiento();
-      const zona = document.getElementById('zona-segura');
-      const zonaRect = zona.getBoundingClientRect();
+    const preguntasMaybe = [
+      "¿Segura? 🤨",
+      "¿Lo reconsiderarías? 🤔",
+      "¿Estás completamente convencida? 😯",
+      "¿Y si lo piensas un poco más? 🧠",
+      "¿Tal vez en otro momento? ⏳",
+      "¿No hay una mínima posibilidad? 😌",
+      "¿Estás 100% segura de tu decisión? 🧐",
+      "¿Qué pasa si te estás perdiendo algo genial? 😏",
+      "¿Y si te arrepientes luego? 😬",
+      "¿Le das una oportunidad? 🙃"
+    ];
+    let maybeIndex = 0;
 
-      const rangeX = zonaRect.width - noButton.offsetWidth;
-      const rangeY = zonaRect.height - noButton.offsetHeight;
+    maybeButton.addEventListener('click', () => {
+      h1.textContent = preguntasMaybe[maybeIndex];
+      maybeIndex = (maybeIndex + 1) % preguntasMaybe.length;
+    });
 
-      const newX = Math.random() * rangeX;
-      const newY = Math.random() * rangeY;
+function moverBoton() {
+  registrarMovimiento();
+  const zona = document.getElementById('zona-segura');
+  const zonaRect = zona.getBoundingClientRect();
 
-      noButton.style.left = `${newX}px`;
-      noButton.style.top = `${newY}px`;
-    }
+  const rangeX = zonaRect.width - noButton.offsetWidth;
+  const rangeY = zonaRect.height - noButton.offsetHeight;
 
-    // PC: Mouse cerca del botón "No"
+  const marginTop = 10;
+  const marginBottom = 90;
+  const maxY = rangeY - marginBottom;
+
+  const newX = Math.random() * rangeX;
+  const newY = marginTop + Math.random() * (maxY - marginTop);
+
+  noButton.style.left = `${newX}px`;
+  noButton.style.top = `${newY}px`;
+}
+
+
     document.addEventListener('mousemove', (e) => {
       const rect = noButton.getBoundingClientRect();
       const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
       if (distancia < 100) moverBoton();
     });
 
-    // Móvil: toque cerca
     document.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
       const rect = noButton.getBoundingClientRect();
@@ -132,13 +143,11 @@
       if (distancia < 100) moverBoton();
     });
 
-    // Click directo en "No"
     noButton.addEventListener('click', (e) => {
       e.preventDefault();
       moverBoton();
     });
 
-    // Click en "Sí"
     yesButton.addEventListener('click', () => {
       clickCount++;
       if (clickCount === 1) {
