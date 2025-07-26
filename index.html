@@ -42,36 +42,39 @@
   </style>
 </head>
 <body>
+<div class="img">
+  <img src="/assets/image.png" alt="Invitación" style="width: 80%; height: auto; border-radius: 15px;">
+</div>
 
-  <h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
+<h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
+
+<div class="button-area" id="zona-segura">
   <div class="button-container">
     <button id="yes-button">Sí 💖</button>
     <button id="no-button">No 😢</button>
   </div>
+</div>
+
 
   <script>
     const noButton = document.getElementById('no-button');
     const yesButton = document.getElementById('yes-button');
     let clickCount = 0;
 
-    function moverBoton() {
-      const rangeX = window.innerWidth * 0.25;
-      const rangeY = window.innerHeight * 0.25;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+function moverBoton() {
+  const zona = document.getElementById('zona-segura');
+  const zonaRect = zona.getBoundingClientRect();
 
-      const minX = centerX - rangeX;
-      const maxX = centerX + rangeX - noButton.offsetWidth;
+  const rangeX = zonaRect.width - noButton.offsetWidth;
+  const rangeY = zonaRect.height - noButton.offsetHeight;
 
-      const minY = centerY - rangeY;
-      const maxY = centerY + rangeY - noButton.offsetHeight;
+  const newX = Math.random() * rangeX;
+  const newY = Math.random() * rangeY;
 
-      const newX = Math.random() * (maxX - minX) + minX;
-      const newY = Math.random() * (maxY - minY) + minY;
+  noButton.style.left = `${newX}px`;
+  noButton.style.top = `${newY}px`;
+}
 
-      noButton.style.left = `${newX}px`;
-      noButton.style.top = `${newY}px`;
-    }
 
     // PC: mouse cerca del botón "No"
     document.addEventListener('mousemove', (e) => {
@@ -106,4 +109,5 @@
   </script>
 
 </body>
+
 </html>
