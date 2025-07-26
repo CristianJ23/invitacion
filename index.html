@@ -45,12 +45,14 @@
 
   <h1>¿Quieres aceptar mi invitación? 🥺👉👈</h1>
   <div class="button-container">
-    <button onclick="aceptar()">Sí 💖</button>
+    <button id="yes-button">Sí 💖</button>
     <button id="no-button">No 😢</button>
   </div>
 
   <script>
     const noButton = document.getElementById('no-button');
+    const yesButton = document.getElementById('yes-button');
+    let clickCount = 0;
 
     function moverBoton() {
       const rangeX = window.innerWidth * 0.25;
@@ -71,14 +73,14 @@
       noButton.style.top = `${newY}px`;
     }
 
-    // PC: detecta el mouse cerca
+    // PC: mouse cerca del botón "No"
     document.addEventListener('mousemove', (e) => {
       const rect = noButton.getBoundingClientRect();
       const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
       if (distancia < 100) moverBoton();
     });
 
-    // Móvil: detecta toques cercanos
+    // Móvil: toque cerca del botón "No"
     document.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
       const rect = noButton.getBoundingClientRect();
@@ -86,9 +88,21 @@
       if (distancia < 100) moverBoton();
     });
 
-    function aceptar() {
-      alert("¡Sabía que dirías que sí! 💕");
-    }
+    // Si alguien llega a hacer clic en "No"
+    noButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      moverBoton();
+    });
+
+    // Click en el botón "Sí"
+    yesButton.addEventListener('click', () => {
+      clickCount++;
+      if (clickCount === 1) {
+        moverBoton(); // el "No" huye al primer clic en "Sí"
+      } else if (clickCount === 2) {
+        alert("¡Sabía que dirías que sí! 💕");
+      }
+    });
   </script>
 
 </body>
