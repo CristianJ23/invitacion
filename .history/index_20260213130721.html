@@ -21,7 +21,7 @@
     #main-question {
       font-size: clamp(28px, 6vw, 60px);
       margin-bottom: 40px;
-      color: rgb(255, 140, 0);
+      color: rgb(255, 0, 81);
     }
 
     .button-area {
@@ -65,107 +65,6 @@
       left: 50%;
       transform: translateX(-50%);
     }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 30px 35px;
-      border-radius: 20px;
-      max-width: 320px;
-      text-align: center;
-      animation: pop 0.4s ease;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-      color: #ff4d6d;
-    }
-
-    .modal-content button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #ff4d6d;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* estilos para e mensaje del final afirmativo */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 30px 35px;
-      border-radius: 20px;
-      max-width: 320px;
-      text-align: center;
-      animation: pop 0.4s ease;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-      color: #ff4d6d;
-    }
-
-    .modal-content button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #ff4d6d;
-      color: white;
-      cursor: pointer;
-    }
-
-    @keyframes pop {
-      from {
-        transform: scale(0.7);
-        opacity: 0;
-      }
-
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
   </style>
 </head>
 
@@ -179,26 +78,11 @@
       <button id="no-button">No 😢</button>
       <button id="maybe-button">Tal vez 🤔</button>
     </div>
-
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <h2> Yay!</h2>
-        <p>
-          You just made my day 🥰
-          I promise this Valentine’s will be full of smiles,
-          surprises and lots of love 💕
-        </p>
-        <button id="closeModal">Aww 💘</button>
-      </div>
-    </div>
-
   </div>
 
   <script>
     const noButton = document.getElementById('no-button');
-    yesButton = document.getElementById('yes-button');
-    const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("closeModal");
+    const yesButton = document.getElementById('yes-button');
     const maybeButton = document.getElementById('maybe-button');
     const h1 = document.getElementById('main-question');
 
@@ -219,14 +103,6 @@
     maybeButton.onclick = () => {
       h1.textContent = preguntasMaybe[maybeIndex];
       maybeIndex = (maybeIndex + 1) % preguntasMaybe.length;
-    };
-
-    yesButton.onclick = () => {
-      modal.classList.add("show");
-    };
-
-    closeModal.onclick = () => {
-      modal.classList.remove("show");
     };
 
     function moverBoton() {
@@ -271,10 +147,9 @@
     };
 
     yesButton.onclick = () => {
-      modal.classList.add("show");
+      alert("I knew you'd say yes! 💕");
     };
   </script>
 
 </body>
-
 </html>

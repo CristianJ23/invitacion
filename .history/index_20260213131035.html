@@ -182,7 +182,7 @@
 
     <div id="modal" class="modal">
       <div class="modal-content">
-        <h2> Yay!</h2>
+        <h2>💖 Yay! 💖</h2>
         <p>
           You just made my day 🥰
           I promise this Valentine’s will be full of smiles,
@@ -196,9 +196,17 @@
 
   <script>
     const noButton = document.getElementById('no-button');
-    yesButton = document.getElementById('yes-button');
     const modal = document.getElementById("modal");
     const closeModal = document.getElementById("closeModal");
+
+    yesButton.onclick = () => {
+      modal.classList.add("show");
+    };
+
+    closeModal.onclick = () => {
+      modal.classList.remove("show");
+    };
+
     const maybeButton = document.getElementById('maybe-button');
     const h1 = document.getElementById('main-question');
 
@@ -219,14 +227,6 @@
     maybeButton.onclick = () => {
       h1.textContent = preguntasMaybe[maybeIndex];
       maybeIndex = (maybeIndex + 1) % preguntasMaybe.length;
-    };
-
-    yesButton.onclick = () => {
-      modal.classList.add("show");
-    };
-
-    closeModal.onclick = () => {
-      modal.classList.remove("show");
     };
 
     function moverBoton() {
@@ -271,7 +271,7 @@
     };
 
     yesButton.onclick = () => {
-      modal.classList.add("show");
+      alert("I knew you'd say yes! 💕");
     };
   </script>
 
