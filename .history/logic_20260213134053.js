@@ -7,12 +7,11 @@
 const firebaseConfig = {
   apiKey: "AIzaSyDGRNIs7idNf3lDDRaOd0Xm122gRGGhRf4",
   authDomain: "the-best-invitation.firebaseapp.com",
-  databaseURL: "https://invitation-d2871-default-rtdb.firebaseio.com/",
   projectId: "the-best-invitation",
   storageBucket: "the-best-invitation.firebasestorage.app",
   messagingSenderId: "574611357611",
   appId: "1:574611357611:web:a59b31017c6a9b11885cee",
-  measurementId: "G-6PLCLQKTSS",
+  measurementId: "G-6PLCLQKTSS"
 };
 
 // Initialize Firebase
@@ -22,9 +21,10 @@ firebase.initializeApp(firebaseConfig);
 window.db = firebase.database();
 
 // 🔹 FUNCIÓN GLOBAL
-window.registrarEvento = function (tipo) {
+window.registrarEvento = function(tipo) {
   window.db.ref("eventosInvitation").push({
     tipo: tipo,
-    fecha: new Date().toISOString(),
+    fecha: new Date().toISOString()
   });
 };
+

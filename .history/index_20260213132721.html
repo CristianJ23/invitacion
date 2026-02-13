@@ -5,9 +5,6 @@
   <meta charset="UTF-8">
   <title>¿Aceptas la invitación?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="logic.js"></script>
 
   <style>
     body {
@@ -50,6 +47,7 @@
     }
 
     #yes-button {
+      position: relative;
       z-index: 2;
     }
 
@@ -68,7 +66,6 @@
       transform: translateX(-50%);
     }
 
-    /* MODAL */
     .modal {
       position: fixed;
       top: 0;
@@ -99,16 +96,62 @@
     }
 
     .modal-content h2 {
+      margin-top: 0;
       color: #ff4d6d;
     }
 
     .modal-content button {
       margin-top: 15px;
       padding: 10px 20px;
+      border: none;
       border-radius: 10px;
       background: #ff4d6d;
       color: white;
+      cursor: pointer;
+    }
+
+    /* estilos para e mensaje del final afirmativo */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px 35px;
+      border-radius: 20px;
+      max-width: 320px;
+      text-align: center;
+      animation: pop 0.4s ease;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      color: #ff4d6d;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+      padding: 10px 20px;
       border: none;
+      border-radius: 10px;
+      background: #ff4d6d;
+      color: white;
       cursor: pointer;
     }
 
@@ -136,29 +179,28 @@
       <button id="no-button">No 😢</button>
       <button id="maybe-button">Tal vez 🤔</button>
     </div>
-  </div>
 
-  <!-- MODAL FUERA -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <h2>💖 Yay! 💖</h2>
-      <p>
-        You just made my day 🥰
-        I promise this Valentine’s will be full of smiles,
-        surprises and lots of love 💕
-      </p>
-      <button id="closeModal">Aww 💘</button>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h2> Yay!</h2>
+        <p>
+          You just made my day 🥰
+          I promise this Valentine’s will be full of smiles,
+          surprises and lots of love 💕
+        </p>
+        <button id="closeModal">Aww 💘</button>
+      </div>
     </div>
-  </div>
 
+  </div>
 
   <script>
     const noButton = document.getElementById('no-button');
-    const yesButton = document.getElementById('yes-button');
-    const maybeButton = document.getElementById('maybe-button');
-    const h1 = document.getElementById('main-question');
+    yesButton = document.getElementById('yes-button');
     const modal = document.getElementById("modal");
     const closeModal = document.getElementById("closeModal");
+    const maybeButton = document.getElementById('maybe-button');
+    const h1 = document.getElementById('main-question');
 
     const preguntasMaybe = [
       "Are you sure? 🤨",
@@ -174,19 +216,22 @@
     ];
 
     let maybeIndex = 0;
-
     maybeButton.onclick = () => {
       registrarEvento("maybe_click");
+
       h1.textContent = preguntasMaybe[maybeIndex];
       maybeIndex = (maybeIndex + 1) % preguntasMaybe.length;
     };
+    
 
     yesButton.onclick = () => {
       registrarEvento("yes_click");
       modal.classList.add("show");
     };
 
-    closeModal.onclick = () => modal.classList.remove("show");
+    closeModal.onclick = () => {
+      modal.classList.remove("show");
+    };
 
     function moverBoton() {
       registrarEvento("no_move");
@@ -204,22 +249,20 @@
       noButton.style.top = `${newY}px`;
     }
 
+
+    // Detectar si es dispositivo táctil
     const esMovil = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
+    // 👉 Desktop comportamiento original
     if (!esMovil) {
       document.addEventListener('mousemove', (e) => {
         const rect = noButton.getBoundingClientRect();
-
-        const botonX = rect.left + rect.width / 2;
-        const botonY = rect.top + rect.height / 2;
-
-        const distancia = Math.hypot(botonX - e.clientX, botonY - e.clientY);
-
-        if (distancia < 120) moverBoton();
+        const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
+        if (distancia < 100) moverBoton();
       });
-
     }
 
+    // 👉 Mobile: botón se hace pequeño cada segundo
     if (esMovil) {
       let scale = 1;
       setInterval(() => {
@@ -233,6 +276,12 @@
       e.preventDefault();
       moverBoton();
     };
+
+    yesButton.onclick = () => {
+      registrarEvento("yes_click");
+      modal.classList.add("show");
+    };
+
   </script>
 
 </body>

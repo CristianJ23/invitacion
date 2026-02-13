@@ -5,9 +5,6 @@
   <meta charset="UTF-8">
   <title>¿Aceptas la invitación?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="logic.js"></script>
 
   <style>
     body {
@@ -49,9 +46,7 @@
       border: none;
     }
 
-    #yes-button {
-      z-index: 2;
-    }
+    #yes-button { z-index: 2; }
 
     #no-button {
       position: absolute;
@@ -98,9 +93,7 @@
       animation: pop 0.4s ease;
     }
 
-    .modal-content h2 {
-      color: #ff4d6d;
-    }
+    .modal-content h2 { color: #ff4d6d; }
 
     .modal-content button {
       margin-top: 15px;
@@ -113,15 +106,8 @@
     }
 
     @keyframes pop {
-      from {
-        transform: scale(0.7);
-        opacity: 0;
-      }
-
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
@@ -143,14 +129,13 @@
     <div class="modal-content">
       <h2>💖 Yay! 💖</h2>
       <p>
-        You just made my day 🥰
+        You just made my day 🥰  
         I promise this Valentine’s will be full of smiles,
         surprises and lots of love 💕
       </p>
       <button id="closeModal">Aww 💘</button>
     </div>
   </div>
-
 
   <script>
     const noButton = document.getElementById('no-button');
@@ -209,15 +194,9 @@
     if (!esMovil) {
       document.addEventListener('mousemove', (e) => {
         const rect = noButton.getBoundingClientRect();
-
-        const botonX = rect.left + rect.width / 2;
-        const botonY = rect.top + rect.height / 2;
-
-        const distancia = Math.hypot(botonX - e.clientX, botonY - e.clientY);
-
-        if (distancia < 120) moverBoton();
+        const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
+        if (distancia < 100) moverBoton();
       });
-
     }
 
     if (esMovil) {
@@ -236,5 +215,4 @@
   </script>
 
 </body>
-
 </html>
