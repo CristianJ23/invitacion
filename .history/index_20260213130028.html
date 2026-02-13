@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>¿Aceptas la invitación?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-image: url('/assets/fondo_romantico.webp');
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f0f8ff;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    .button-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 80px;
+      height: 380px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 25px;
+      cursor: pointer;
+    }
+
+    #no-button {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: top 0.2s, left 0.2s;
+    }
+
+    main-question {
+      font-size: 28px;
+      margin-bottom: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- imagen de invitacion -->
+  <!-- <div class="img">
+    <img src="/assets/image.png" alt="Invitación" style="width: 80%; height: auto; border-radius: 15px;">
+  </div> -->
+
+
+  <!-- <h1 id="main-question">¿Quieres aceptar mi invitación? 🥺</h1> -->
+  <h1 id="main-question">¿Will you be my Valentine? 🥺</h1>
+
+  <div class="button-area" id="zona-segura">
+    <div class="button-container">
+      <button id="yes-button">Sí 😉</button>
+      <button id="no-button">No 😢</button>
+      <button id="maybe-button">Tal vez 🤔</button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8iRrVqRcjjLfumwTDtTcdQtguiH3A_84",
+      authDomain: "invitation-d2871.firebaseapp.com",
+      databaseURL: "https://invitation-d2871-default-rtdb.firebaseio.com",
+      projectId: "invitation-d2871",
+      storageBucket: "invitation-d2871.appspot.com",
+      messagingSenderId: "1017668626783",
+      appId: "1:1017668626783:web:f979fe66ab205d377eeeea",
+      measurementId: "G-W9GSS4PMXT"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function registrarMovimiento() {
+      db.ref("invitation").push({
+        fecha: new Date().toISOString(),
+        numero: 1
+      });
+    }
+
+    // Botones
+    const noButton = document.getElementById('no-button');
+    const yesButton = document.getElementById('yes-button');
+    const maybeButton = document.getElementById('maybe-button');
+    const h1 = document.getElementById('main-question');
+
+    let clickCount = 0;
+
+    // const preguntasMaybe = [
+    //   "¿Segura? 🤨",
+    //   "¿Lo reconsiderarías? 🤔",
+    //   "¿Estás completamente convencida? 😯",
+    //   "¿Y si lo piensas un poco más? 🧠",
+    //   "¿Tal vez en otro momento? ⏳",
+    //   "¿No hay una mínima posibilidad? 😌",
+    //   "¿Estás 100% segura de tu decisión? 🧐",
+    //   "¿Qué pasa si te estás perdiendo algo genial? 😏",
+    //   "¿Y si te arrepientes luego? 😬",
+    //   "¿Le das una oportunidad? 🙃"
+    // ];
+    const preguntasMaybe = [
+      "Are you sure? 🤨",
+      "Would you reconsider? 🤔",
+      "Are you completely convinced? 😯",
+      "What if you think about it a bit more? 🧠",
+      "Maybe another time? ⏳",
+      "Isn’t there even a tiny chance? 😌",
+      "Are you 100% sure about your decision? 🧐",
+      "What if you’re missing out on something great? 😏",
+      "What if you regret it later? 😬",
+      "Will you give it a chance? 🙃"
+    ];
+
+    let maybeIndex = 0;
+
+    maybeButton.addEventListener('click', () => {
+      h1.textContent = preguntasMaybe[maybeIndex];
+      maybeIndex = (maybeIndex + 1) % preguntasMaybe.length;
+    });
+
+    function moverBoton() {
+      registrarMovimiento();
+      const zona = document.getElementById('zona-segura');
+      const zonaRect = zona.getBoundingClientRect();
+
+      const rangeX = zonaRect.width - noButton.offsetWidth;
+      const rangeY = zonaRect.height - noButton.offsetHeight;
+
+      const marginTop = 10;
+      const marginBottom = 90;
+      const maxY = rangeY - marginBottom;
+
+      const newX = Math.random() * rangeX;
+      const newY = marginTop + Math.random() * (maxY - marginTop);
+
+      noButton.style.left = `${newX}px`;
+      noButton.style.top = `${newY}px`;
+    }
+
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = noButton.getBoundingClientRect();
+      const distancia = Math.hypot(rect.x - e.clientX, rect.y - e.clientY);
+      if (distancia < 100) moverBoton();
+    });
+
+    document.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      const rect = noButton.getBoundingClientRect();
+      const distancia = Math.hypot(rect.x - touch.clientX, rect.y - touch.clientY);
+      if (distancia < 100) moverBoton();
+    });
+
+    noButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      moverBoton();
+    });
+
+    yesButton.addEventListener('click', () => {
+      clickCount++;
+      if (clickCount === 1) {
+        moverBoton();
+      } else if (clickCount === 2) {
+        // alert("¡Sabía que dirías que si! 💕");
+        alert("¡I knew you'd say yes! 💕");
+      }
+
+    });
+  </script>
+</body>
+
+</html>
